@@ -8,6 +8,10 @@ import com.shabashab.graphplotter.actors.GraphActor;
 import com.shabashab.graphplotter.utils.GraphPosition;
 
 public class GraphPositionInputListener extends InputListener {
+  private static final float ZOOM_FACTOR = 0.1f;
+  private static final float POSITIVE_ZOOM_FACTOR = ZOOM_FACTOR + 1;
+  private static final float NEGATIVE_ZOOM_FACTOR = 1 / POSITIVE_ZOOM_FACTOR;
+
   private final GraphPosition _position;
   private final GraphActor _actor;
 
@@ -39,19 +43,19 @@ public class GraphPositionInputListener extends InputListener {
 
   @Override
   public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY) {
-    float multiplier = (amountY * 0.75f) + 1.25f;
+    float factor = amountY > 0 ? POSITIVE_ZOOM_FACTOR : NEGATIVE_ZOOM_FACTOR;
 
     if(_isCtrlPressed) {
-      _position.setScale(_position.getXScale() * multiplier, _position.getYScale());
+      _position.setScale(_position.getXScale() * factor, _position.getYScale());
       return true;
     }
 
     if(_isShiftPressed) {
-      _position.setScale(_position.getXScale(), _position.getYScale() * multiplier);
+      _position.setScale(_position.getXScale(), _position.getYScale() * factor);
       return true;
     }
 
-    _position.setScale(_position.getXScale() * multiplier, _position.getYScale() * multiplier);
+    _position.setScale(_position.getXScale() * factor, _position.getYScale() * factor);
     return true;
   }
 
