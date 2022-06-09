@@ -1,6 +1,7 @@
 package com.shabashab.graphplotter.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
@@ -16,7 +17,7 @@ public class GraphActor extends Actor implements Disposable {
   private Mesh _graphMesh;
   private final Mesh _axisMesh;
 
-  private Vector2 _scale;
+  private final Vector2 _scale;
 
   private final ShaderProgram _graphShader;
   private final ShaderProgram _axisShader;
@@ -33,6 +34,7 @@ public class GraphActor extends Actor implements Disposable {
     return shader;
   }
 
+
   public GraphActor() {
     _renderer = new ShapeRenderer();
 
@@ -47,6 +49,8 @@ public class GraphActor extends Actor implements Disposable {
 
     this.addListener(new InputListener() {
       private Vector2 _previousMousePosition;
+      private boolean _isCtrlPressed = false;
+      private boolean _isShiftPressed = false;
 
       @Override
       public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -69,9 +73,40 @@ public class GraphActor extends Actor implements Disposable {
       public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY) {
         float multiplier = (amountY * 0.75f) + 1.25f;
 
-        _scale.set(_scale.x * multiplier, _scale.y * multiplier);
+        if(_isCtrlPressed) {
+          _scale.set(_scale.x * multiplier, _scale.y);
+          return true;
+        }
 
+        if(_isShiftPressed) {
+          _scale.set(_scale.x, _scale.y * multiplier);
+          return true;
+        }
+
+        _scale.set(_scale.x * multiplier, _scale.y * multiplier);
         return true;
+      }
+
+      @Override
+      public boolean keyDown(InputEvent event, int keycode) {
+        if(keycode == Input.Keys.CONTROL_LEFT)
+          _isCtrlPressed = true;
+
+        if(keycode == Input.Keys.SHIFT_LEFT)
+          _isShiftPressed = true;
+
+        return super.keyDown(event, keycode);
+      }
+
+      @Override
+      public boolean keyUp(InputEvent event, int keycode) {
+        if(keycode == Input.Keys.CONTROL_LEFT)
+          _isCtrlPressed = false;
+
+        if(keycode == Input.Keys.SHIFT_LEFT)
+          _isShiftPressed = false;
+
+        return super.keyUp(event, keycode);
       }
     });
 

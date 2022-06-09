@@ -51,7 +51,9 @@ public class GraphPlotter extends ApplicationAdapter {
 
 		_graphStage = new Stage(viewport);
 		Gdx.input.setInputProcessor(_graphStage);
+
 		_graphStage.setScrollFocus(_graphActor);
+		_graphStage.setKeyboardFocus(_graphActor);
 
 		_graphStage.addActor(_graphActor);
 	}
