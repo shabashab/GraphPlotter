@@ -40,10 +40,8 @@ public class GraphPlotter extends ApplicationAdapter {
 		Viewport viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, camera);
 
 
-		_graphActor = new GraphActor();
-
 		Vector2[] points = calculatePoints(-10f, 10f, 200);
-		_graphActor.setPoints(points);
+		_graphActor = new GraphActor(points);
 
 		_graphActor.setPosition(0f, 0f);
 		_graphActor.setWidth(GAME_WIDTH);
@@ -68,10 +66,6 @@ public class GraphPlotter extends ApplicationAdapter {
 	@Override
 	public void render () {
 		ScreenUtils.clear(Color.BLACK);
-
-		Vector2 graphActorOffset = _graphActor.getOffset();
-
-		_graphActor.setOffset(graphActorOffset);
 
 		_graphStage.draw();
 	}
