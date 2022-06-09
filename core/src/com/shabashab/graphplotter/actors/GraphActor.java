@@ -1,5 +1,6 @@
 package com.shabashab.graphplotter.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
@@ -21,8 +22,6 @@ public class GraphActor extends Actor implements Disposable {
     _axis = new Axis(_position);
     _plot = new Plot(points, _position);
 
-//    this.setBounds(getX(), getY(), getWidth(), getHeight());
-
     this.addListener(new GraphPositionInputListener(_position, this));
   }
 
@@ -34,6 +33,8 @@ public class GraphActor extends Actor implements Disposable {
   public void draw(Batch batch, float parentAlpha) {
     _axis.draw(batch);
     _plot.draw(batch);
+
+    Gdx.graphics.setTitle("Scale Y: " + _position.getYScale() + "; scale x: " + _position.getXScale() + ";FPS: " + Gdx.graphics.getFramesPerSecond());
   }
 
   @Override
