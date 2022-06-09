@@ -21,7 +21,7 @@ public class GraphActor extends Actor implements Disposable {
     _axis = new Axis(_position);
     _plot = new Plot(points, _position);
 
-    this.setBounds(getX(), getY(), getWidth(), getHeight());
+//    this.setBounds(getX(), getY(), getWidth(), getHeight());
 
     this.addListener(new GraphPositionInputListener(_position, this));
   }
