@@ -122,16 +122,19 @@ public class GraphActor extends Actor implements Disposable {
   }
 
   private Mesh createAxisMesh() {
-    MeshBuilder builder = new MeshBuilder();
+    Mesh axisMesh = new Mesh(true, 4, 0, new VertexAttribute(VertexAttributes.Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE));
 
-    VertexAttributes attributes = new VertexAttributes(VertexAttribute.Position());
+    float[] vertices = new float[] {
+            -1f,  0f,
+            1f,   0f,
 
-    builder.begin(attributes, GL20.GL_LINES);
+            0f,  -1f,
+            0f,   1f
+    };
 
-    builder.line(-1f, 0f, 0f, 1f, 0f, 0f);
-    builder.line(0f, -1f, 0f, 0f, 1f, 0f);
+    axisMesh.setVertices(vertices, 0, vertices.length);
 
-    return builder.end();
+    return axisMesh;
   }
 
   private float[] createVertices(Vector2[] points) {
