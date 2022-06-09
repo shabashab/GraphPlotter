@@ -10,9 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.Disposable;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 public class GraphActor extends Actor implements Disposable {
   private final ShapeRenderer _renderer;
 
@@ -59,8 +56,8 @@ public class GraphActor extends Actor implements Disposable {
 
       @Override
       public void touchDragged(InputEvent event, float x, float y, int pointer) {
-        float scalarX = _scale.x / getWidth();
-        float scalarY = _scale.y / getHeight();
+        float scalarX = _scale.x * 2 / getWidth();
+        float scalarY = _scale.y * 2 / getHeight();
 
         Vector2 mousePosition = new Vector2(x, y);
 
