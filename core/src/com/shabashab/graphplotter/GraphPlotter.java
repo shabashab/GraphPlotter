@@ -16,18 +16,23 @@ public class GraphPlotter extends ApplicationAdapter {
 	}
 
 	@Override
-	public void create () {
+	public void create() {
 		ImGuiHelper.initializeImGui();
 
 		_uiStage = new Stage();
-
 		_uiActor = new UIActor();
+
 		_uiStage.addActor(_uiActor);
+
+		Gdx.input.setInputProcessor(_uiStage);
+		_uiStage.setScrollFocus(_uiActor);
+		_uiStage.setKeyboardFocus(_uiActor);
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		ScreenUtils.clear(Color.BLACK);
+		_uiStage.getViewport().update(width, height, true);
+		_uiActor.setBounds(0, 0, width, height);
 	}
 
 	@Override

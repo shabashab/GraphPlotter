@@ -33,7 +33,7 @@ public class GraphPositionInputListener extends InputListener {
   @Override
   public void touchDragged(InputEvent event, float x, float y, int pointer) {
     float scalarX = _position.getXScale() * 2 / _actor.getWidth();
-    float scalarY = _position.getYScale() * 2 / _actor.getHeight();
+    float scalarY = (_position.getYScale() * 2 / _actor.getHeight()) * -1;
 
     Vector2 mousePosition = new Vector2(x, y);
 

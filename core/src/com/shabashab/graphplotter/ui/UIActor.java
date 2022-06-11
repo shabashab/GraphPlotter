@@ -1,6 +1,5 @@
 package com.shabashab.graphplotter.ui;
 
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shabashab.graphplotter.actors.GraphActor;
+import com.shabashab.graphplotter.input.UIEventListener;
 import com.shabashab.graphplotter.utils.GraphPosition;
 import imgui.ImGui;
 import org.lwjgl.opengl.GL30;
@@ -18,16 +18,17 @@ import org.lwjgl.opengl.GL30;
 import java.nio.ByteBuffer;
 
 public class UIActor extends Actor {
-  private Stage _graphStage;
-  private GraphActor _graphActor;
+  private final Stage _graphStage;
+  private final GraphActor _graphActor;
+  private final GraphPosition _graphPosition;
 
-  private GraphPosition _graphPosition;
+  private int _textureId;
+  private final int _frameBufferId;
 
-  int textureId;
-  int framebufferId;
+  private int _graphTextureWidth = 0;
+  private int _graphTextureHeight = 0;
 
-  int textureWidth = 0;
-  int textureHeight = 0;
+  private final UIEventListener _eventListener;
 
   private Vector2[] calculatePoints(float from, float to, int stepsCount) {
     float stepSize = (to - from) / stepsCount;
@@ -53,13 +54,15 @@ public class UIActor extends Actor {
     _graphStage.setViewport(viewport);
 
     _graphActor = new GraphActor(calculatePoints(-10f, 10f, 200));
-    _graphActor.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
     _graphStage.addActor(_graphActor);
 
     _graphPosition = _graphActor.getPosition();
 
-    framebufferId = GL30.glGenFramebuffers();
+    _eventListener = new UIEventListener(_graphActor.getInputListener(), new Vector2(0, 0), new Vector2(0, 0));
+    addListener(_eventListener);
+
+    _frameBufferId = GL30.glGenFramebuffers();
   }
 
   @Override
@@ -86,14 +89,14 @@ public class UIActor extends Actor {
     ImGui.setNextWindowPos(0, mainMenuBarHeight);
     ImGui.setNextWindowSize(leftWindowWidth, Gdx.graphics.getHeight() - mainMenuBarHeight);
 
-    if(ImGui.begin("My left window")) {
-      ImGui.text("Texture width: " + textureWidth);
-      ImGui.text("Texture height: " + textureHeight);
-
+    if(ImGui.begin("Parameters")) {
       ImGui.text("Graph offset x: " + _graphPosition.getXOffset());
       ImGui.text("Graph offset y: " + _graphPosition.getYOffset());
       ImGui.text("Graph scale x: " + _graphPosition.getXScale());
       ImGui.text("Graph scale y: " + _graphPosition.getYScale());
+
+      ImGui.text("Graph actor x: " + _graphActor.getX());
+      ImGui.text("Graph actor y: " + _graphActor.getY());
 
       ImGui.end();
     }
@@ -101,18 +104,18 @@ public class UIActor extends Actor {
     ImGui.setNextWindowPos(leftWindowWidth, mainMenuBarHeight);
     ImGui.setNextWindowSize(Gdx.graphics.getWidth() - leftWindowWidth, Gdx.graphics.getHeight() - mainMenuBarHeight);
 
-    if(ImGui.begin("Graph window")) {
+    if(ImGui.begin("Plot")) {
       int innerWidth = (int)ImGui.getWindowWidth();
       int innerHeight = (int)ImGui.getWindowHeight();
 
-      GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, framebufferId);
+      GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, _frameBufferId);
 
-      if((textureWidth != innerWidth) || (textureHeight != innerHeight)) {
-        GL30.glDeleteTextures(textureId);
+      if((_graphTextureWidth != innerWidth) || (_graphTextureHeight != innerHeight)) {
+        GL30.glDeleteTextures(_textureId);
 
-        textureId = GL30.glGenTextures();
+        _textureId = GL30.glGenTextures();
 
-        GL30.glBindTexture(GL30.GL_TEXTURE_2D, textureId);
+        GL30.glBindTexture(GL30.GL_TEXTURE_2D, _textureId);
 
         GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0, GL30.GL_RGB, innerWidth, innerHeight, 0, GL30.GL_RGB, GL30.GL_UNSIGNED_BYTE, (ByteBuffer)null);
 
@@ -121,28 +124,34 @@ public class UIActor extends Actor {
 
         GL30.glBindTexture(GL30.GL_TEXTURE_2D, 0);
 
-        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL30.GL_TEXTURE_2D, textureId, 0);
+        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL30.GL_TEXTURE_2D, _textureId, 0);
 
-        textureWidth = innerWidth;
-        textureHeight = innerHeight;
+        _graphTextureWidth = innerWidth;
+        _graphTextureHeight = innerHeight;
 
-        _graphStage.getViewport().update(textureWidth, textureHeight);
+        _graphStage.getViewport().update(_graphTextureWidth, _graphTextureHeight);
+
+        float x = ImGui.getCursorScreenPosX();
+        float y = ImGui.getCursorScreenPosY();
+
+        float width = (float)innerWidth;
+        float height = (float)innerHeight;
+
+        _graphActor.setBounds(x, y, width, height);
+        _eventListener.updateGraphViewBounds(x, y, width, height);
       }
 
-      GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, framebufferId);
+      GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, _frameBufferId);
 
       GL30.glClearColor(0f, 0f, 0f, 1f);
       GL30.glClear(GL30.GL_COLOR_BUFFER_BIT);
-
-      _graphActor.setWidth((float)innerWidth);
-      _graphActor.setHeight((float)innerHeight);
 
       _graphStage.draw();
 
       GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 
       ImGui.getWindowDrawList().addImage(
-              textureId,
+              _textureId,
               ImGui.getCursorScreenPosX(),
               ImGui.getCursorScreenPosY(),
               ImGui.getWindowPosX() + ImGui.getWindowSizeX(),
@@ -152,7 +161,7 @@ public class UIActor extends Actor {
       ImGui.end();
     }
 
-    ImGui.showMetricsWindow();
+//    ImGui.showMetricsWindow();
 
     ImGui.render();
     ImGuiHelper.getImGuiGl3().renderDrawData(ImGui.getDrawData());
