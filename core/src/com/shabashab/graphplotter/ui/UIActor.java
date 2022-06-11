@@ -1,28 +1,15 @@
 package com.shabashab.graphplotter.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shabashab.graphplotter.actors.GraphActor;
 import com.shabashab.graphplotter.input.UIEventListener;
 import com.shabashab.graphplotter.utils.GraphPosition;
 import imgui.ImGui;
-import imgui.ImGuiIO;
-import imgui.ImGuiPlatformIO;
-import imgui.ImGuiViewport;
-import imgui.flag.ImGuiBackendFlags;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiConfigFlags;
-import imgui.flag.ImGuiWindowFlags;
-import imgui.internal.ImGuiWindow;
 import org.lwjgl.opengl.GL30;
 
 import java.nio.ByteBuffer;
@@ -30,7 +17,6 @@ import java.nio.ByteBuffer;
 public class UIActor extends Actor {
   private final Stage _graphStage;
   private final GraphActor _graphActor;
-  private final GraphPosition _graphPosition;
 
   private int _textureId;
   private final int _frameBufferId;
@@ -66,8 +52,6 @@ public class UIActor extends Actor {
     _graphActor = new GraphActor(calculatePoints(-10f, 10f, 200));
 
     _graphStage.addActor(_graphActor);
-
-    _graphPosition = _graphActor.getPosition();
 
     _eventListener = new UIEventListener(_graphActor.getInputListener(), new Vector2(0, 0), new Vector2(0, 0));
     addListener(_eventListener);
