@@ -1,5 +1,6 @@
 package com.shabashab.graphplotter.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,16 +27,17 @@ public class GraphPositionInputListener extends InputListener {
 
   @Override
   public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-    _previousMousePosition = new Vector2(x, y);
+    _previousMousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+
     return true;
   }
 
   @Override
   public void touchDragged(InputEvent event, float x, float y, int pointer) {
     float scalarX = _position.getXScale() * 2 / _actor.getWidth();
-    float scalarY = (_position.getYScale() * 2 / _actor.getHeight()) * -1;
+    float scalarY = _position.getYScale() * 2 / _actor.getHeight();
 
-    Vector2 mousePosition = new Vector2(x, y);
+    Vector2 mousePosition = new Vector2(Gdx.input.getX(), Gdx.input.getY());
 
     _position.setOffset(_position.getXOffset() + (mousePosition.x - _previousMousePosition.x) * scalarX, _position.getYOffset() + (mousePosition.y - _previousMousePosition.y) * scalarY);
     _previousMousePosition = mousePosition;
