@@ -33,8 +33,6 @@ public class GraphActor extends Actor implements Disposable {
   public void draw(Batch batch, float parentAlpha) {
     _axis.draw(batch);
     _plot.draw(batch);
-
-    Gdx.graphics.setTitle("Scale Y: " + _position.getYScale() + "; scale x: " + _position.getXScale() + ";FPS: " + Gdx.graphics.getFramesPerSecond());
   }
 
   @Override
