@@ -5,12 +5,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 
-public class UIEventListener implements EventListener {
+public class GraphWindowEventListener implements EventListener {
   private final Vector2 _graphViewPosition;
   private final Vector2 _graphViewSize;
   private final GraphPositionInputListener _graphPositionInputListener;
 
-  public UIEventListener(GraphPositionInputListener listener, Vector2 graphViewPosition, Vector2 graphViewSize) {
+  public GraphWindowEventListener(GraphPositionInputListener listener, Vector2 graphViewPosition, Vector2 graphViewSize) {
     _graphPositionInputListener = listener;
     _graphViewPosition = graphViewPosition;
     _graphViewSize = graphViewSize;
