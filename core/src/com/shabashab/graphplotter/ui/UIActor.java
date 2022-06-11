@@ -8,11 +8,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shabashab.graphplotter.actors.GraphActor;
 import com.shabashab.graphplotter.input.UIEventListener;
 import com.shabashab.graphplotter.utils.GraphPosition;
 import imgui.ImGui;
+import imgui.ImGuiIO;
+import imgui.ImGuiPlatformIO;
+import imgui.ImGuiViewport;
+import imgui.flag.ImGuiBackendFlags;
+import imgui.flag.ImGuiCond;
+import imgui.flag.ImGuiConfigFlags;
+import imgui.flag.ImGuiWindowFlags;
+import imgui.internal.ImGuiWindow;
 import org.lwjgl.opengl.GL30;
 
 import java.nio.ByteBuffer;
@@ -28,6 +38,9 @@ public class UIActor extends Actor {
   private int _graphTextureWidth = 0;
   private int _graphTextureHeight = 0;
 
+  private float _graphWindowPositionX = 0;
+  private float _graphWindowPositionY = 0;
+
   private final UIEventListener _eventListener;
 
   private Vector2[] calculatePoints(float from, float to, int stepsCount) {
@@ -35,7 +48,7 @@ public class UIActor extends Actor {
 
     Vector2[] points = new Vector2[stepsCount];
 
-    for(int i = 0; i < stepsCount; i++) {
+    for (int i = 0; i < stepsCount; i++) {
       float x = from + stepSize * i;
       float y = (float) Math.sin(x);
 
@@ -46,12 +59,9 @@ public class UIActor extends Actor {
   }
 
   public UIActor() {
-    Camera camera = new OrthographicCamera(500, 500);
-    Viewport viewport = new ExtendViewport(500, 500, camera);
+    ImGui.getIO().addConfigFlags(ImGuiConfigFlags.DockingEnable);
 
     _graphStage = new Stage();
-
-    _graphStage.setViewport(viewport);
 
     _graphActor = new GraphActor(calculatePoints(-10f, 10f, 200));
 
@@ -71,53 +81,39 @@ public class UIActor extends Actor {
 
     ImGui.newFrame();
 
-    float mainMenuBarHeight = 0;
+    ImGui.dockSpaceOverViewport(ImGui.getMainViewport());
+
+    ImGui.getIO().setConfigWindowsMoveFromTitleBarOnly(true);
 
     if(ImGui.beginMainMenuBar()) {
       if(ImGui.beginMenu("File")) {
-        ImGui.menuItem("Save to file...");
+        if(ImGui.menuItem("Exit")) {
+          System.exit(0);
+        }
         ImGui.endMenu();
       }
-
-      mainMenuBarHeight = ImGui.getFrameHeight();
-
       ImGui.endMainMenuBar();
     }
 
-    float leftWindowWidth = Gdx.graphics.getWidth() / 4f;
+    ImGui.setNextWindowSize(600, 600, ImGuiCond.FirstUseEver);
 
-    ImGui.setNextWindowPos(0, mainMenuBarHeight);
-    ImGui.setNextWindowSize(leftWindowWidth, Gdx.graphics.getHeight() - mainMenuBarHeight);
+    if (ImGui.begin("Plot")) {
+      int width = (int) ImGui.getWindowWidth();
+      int height = (int) ImGui.getWindowHeight();
 
-    if(ImGui.begin("Parameters")) {
-      ImGui.text("Graph offset x: " + _graphPosition.getXOffset());
-      ImGui.text("Graph offset y: " + _graphPosition.getYOffset());
-      ImGui.text("Graph scale x: " + _graphPosition.getXScale());
-      ImGui.text("Graph scale y: " + _graphPosition.getYScale());
-
-      ImGui.text("Graph actor x: " + _graphActor.getX());
-      ImGui.text("Graph actor y: " + _graphActor.getY());
-
-      ImGui.end();
-    }
-
-    ImGui.setNextWindowPos(leftWindowWidth, mainMenuBarHeight);
-    ImGui.setNextWindowSize(Gdx.graphics.getWidth() - leftWindowWidth, Gdx.graphics.getHeight() - mainMenuBarHeight);
-
-    if(ImGui.begin("Plot")) {
-      int innerWidth = (int)ImGui.getWindowWidth();
-      int innerHeight = (int)ImGui.getWindowHeight();
+      float x = ImGui.getWindowPosX();
+      float y = ImGui.getWindowPosY();
 
       GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, _frameBufferId);
 
-      if((_graphTextureWidth != innerWidth) || (_graphTextureHeight != innerHeight)) {
+      if ((_graphTextureWidth != width) || (_graphTextureHeight != height)) {
         GL30.glDeleteTextures(_textureId);
 
         _textureId = GL30.glGenTextures();
 
         GL30.glBindTexture(GL30.GL_TEXTURE_2D, _textureId);
 
-        GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0, GL30.GL_RGB, innerWidth, innerHeight, 0, GL30.GL_RGB, GL30.GL_UNSIGNED_BYTE, (ByteBuffer)null);
+        GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0, GL30.GL_RGB, width, height, 0, GL30.GL_RGB, GL30.GL_UNSIGNED_BYTE, (ByteBuffer) null);
 
         GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MIN_FILTER, GL30.GL_LINEAR);
         GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MAG_FILTER, GL30.GL_LINEAR);
@@ -126,22 +122,26 @@ public class UIActor extends Actor {
 
         GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL30.GL_TEXTURE_2D, _textureId, 0);
 
-        _graphTextureWidth = innerWidth;
-        _graphTextureHeight = innerHeight;
+        _graphTextureWidth = width;
+        _graphTextureHeight = height;
 
-        _graphStage.getViewport().update(_graphTextureWidth, _graphTextureHeight);
+        _graphStage.getViewport().update(_graphTextureWidth, _graphTextureHeight, true);
+        _graphStage.getCamera().update(true);
 
-        float x = ImGui.getCursorScreenPosX();
-        float y = ImGui.getCursorScreenPosY();
+        _graphActor.setSize(width - 40, height - 40);
+        _eventListener.updateGraphViewSize(width - 40, height - 40);
+      }
 
-        float width = (float)innerWidth;
-        float height = (float)innerHeight;
+      if((_graphWindowPositionX != x) || (_graphWindowPositionY != y)) {
+        _eventListener.updateGraphViewPos(x + 20, y + 20);
 
-        _graphActor.setBounds(x, y, width, height);
-        _eventListener.updateGraphViewBounds(x, y, width, height);
+        _graphWindowPositionX = x;
+        _graphWindowPositionY = y;
       }
 
       GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, _frameBufferId);
+
+      GL30.glViewport(0, 0, width, height);
 
       GL30.glClearColor(0f, 0f, 0f, 1f);
       GL30.glClear(GL30.GL_COLOR_BUFFER_BIT);
@@ -160,8 +160,6 @@ public class UIActor extends Actor {
 
       ImGui.end();
     }
-
-//    ImGui.showMetricsWindow();
 
     ImGui.render();
     ImGuiHelper.getImGuiGl3().renderDrawData(ImGui.getDrawData());

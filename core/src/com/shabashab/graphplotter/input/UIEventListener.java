@@ -16,9 +16,12 @@ public class UIEventListener implements EventListener {
     _graphViewSize = graphViewSize;
   }
 
-  public void updateGraphViewBounds(float x, float y, float width, float height) {
-    _graphViewPosition.set(x, y);
+  public void updateGraphViewSize(float width, float height) {
     _graphViewSize.set(width, height);
+  }
+
+  public void updateGraphViewPos(float x, float y) {
+    _graphViewPosition.set(x, y);
   }
 
   @Override

@@ -49,7 +49,7 @@ public class Axis extends Sprite implements Disposable {
 
     _shader.setUniform2fv("u_offset", _position.getOffsetUniformData(), 0, 2);
     _shader.setUniform2fv("u_scale", _position.getScaleUniformData(), 0, 2);
-
+//    _shader.setUniformMatrix("u_projectionMatrix", , false);
     _mesh.render(_shader, GL20.GL_LINES);
   }
 
