@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shabashab.graphplotter.actors.GraphActor;
 import com.shabashab.graphplotter.utils.GraphPosition;
 import imgui.ImGui;
@@ -43,7 +45,13 @@ public class UIActor extends Actor {
   }
 
   public UIActor() {
+    Camera camera = new OrthographicCamera(500, 500);
+    Viewport viewport = new ExtendViewport(500, 500, camera);
+
     _graphStage = new Stage();
+
+    _graphStage.setViewport(viewport);
+
     _graphActor = new GraphActor(calculatePoints(-10f, 10f, 200));
     _graphActor.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -117,6 +125,8 @@ public class UIActor extends Actor {
 
         textureWidth = innerWidth;
         textureHeight = innerHeight;
+
+        _graphStage.getViewport().update(textureWidth, textureHeight);
       }
 
       GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, framebufferId);
