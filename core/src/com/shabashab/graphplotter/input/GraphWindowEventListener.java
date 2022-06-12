@@ -26,6 +26,9 @@ public class GraphWindowEventListener implements EventListener {
 
   @Override
   public boolean handle(Event event) {
+    if(event.isCancelled())
+      return false;
+
     int mouseX = Gdx.input.getX();
     int mouseY = Gdx.input.getY();
 

@@ -11,6 +11,7 @@ import imgui.ImGui;
 public class GraphWindow extends ImGuiWindow {
   private final GraphActor _graphActor;
 
+  private boolean _isInFocus = false;
   private float _graphWindowPositionX = 0;
   private float _graphWindowPositionY = 0;
 
@@ -49,8 +50,14 @@ public class GraphWindow extends ImGuiWindow {
     return points;
   }
 
+  public boolean getIsInFocus() {
+    return _isInFocus;
+  }
+
   @Override
   protected void setupWindow() {
+    _isInFocus = ImGui.isWindowFocused();
+
     int width = (int) ImGui.getWindowWidth();
     int height = (int) ImGui.getWindowHeight();
 

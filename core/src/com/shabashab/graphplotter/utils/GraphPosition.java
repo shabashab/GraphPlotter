@@ -5,7 +5,6 @@ public class GraphPosition {
   private final float[] _offset;
   private final float[] _scale;
 
-
   public GraphPosition(float xOffset, float yOffset, float xScale, float yScale) {
     _offset = new float[] {xOffset, yOffset};
     _scale = new float[] {xScale, yScale};
