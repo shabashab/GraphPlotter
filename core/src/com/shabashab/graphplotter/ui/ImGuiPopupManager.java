@@ -1,11 +1,15 @@
 package com.shabashab.graphplotter.ui;
 
+import com.shabashab.graphplotter.ui.elements.ImGuiPopup;
+import com.shabashab.graphplotter.ui.elements.ImGuiRenderable;
+
 import java.util.ArrayList;
 
-public class ImGuiPopupManager {
+public class ImGuiPopupManager extends ImGuiRenderable {
   private final ArrayList<ImGuiPopup> _popups;
 
-  public ImGuiPopupManager() {
+  public ImGuiPopupManager(GuiElementsPool pool) {
+    super(pool);
     _popups = new ArrayList<>();
   }
 
@@ -19,5 +23,20 @@ public class ImGuiPopupManager {
         dialog.render();
       }
     }
+  }
+
+  @Override
+  protected boolean begin() {
+    return !_popups.isEmpty();
+  }
+
+  @Override
+  protected void end() {
+    //nothing
+  }
+
+  @Override
+  protected void setup() {
+    renderPopups();
   }
 }

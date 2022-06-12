@@ -1,10 +1,9 @@
 package com.shabashab.graphplotter.ui;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.shabashab.graphplotter.actors.GraphActor;
-import com.shabashab.graphplotter.input.GraphWindowEventListener;
+import com.shabashab.graphplotter.ui.elements.ImGuiWindow;
 import com.shabashab.graphplotter.utils.StageFramebufferRenderer;
 import imgui.ImGui;
 
@@ -12,28 +11,26 @@ public class GraphWindow extends ImGuiWindow {
   private final GraphActor _graphActor;
 
   private boolean _isInFocus = false;
-  private float _graphWindowPositionX = 0;
-  private float _graphWindowPositionY = 0;
 
-  private final GraphWindowEventListener _listener;
+  private float _windowPositionX = 0;
+  private float _windowPositionY = 0;
+
+  private float _windowWidth = 0;
+  private float _windowHeight = 0;
+
   private final StageFramebufferRenderer _graphStageRenderer;
 
-  public GraphWindow() {
-    super("Plot");
+  public GraphWindow(GuiElementsPool pool) {
+    super(pool, "Plot");
 
     Stage graphStage = new Stage();
 
     _graphActor = new GraphActor(calculatePoints(-10f, 10f, 200));
     graphStage.addActor(_graphActor);
 
-    _listener = new GraphWindowEventListener(_graphActor.getInputListener(), new Vector2(0, 0), new Vector2(0, 0));
-
     _graphStageRenderer = new StageFramebufferRenderer(graphStage);
   }
 
-  public EventListener getEventListener() {
-    return _listener;
-  }
 
   private Vector2[] calculatePoints(float from, float to, int stepsCount) {
     float stepSize = (to - from) / stepsCount;
@@ -55,7 +52,7 @@ public class GraphWindow extends ImGuiWindow {
   }
 
   @Override
-  protected void setupWindow() {
+  protected void setup() {
     _isInFocus = ImGui.isWindowFocused();
 
     int width = (int) ImGui.getWindowWidth();
@@ -68,7 +65,7 @@ public class GraphWindow extends ImGuiWindow {
       onWindowSizeUpdate(width, height);
     }
 
-    if ((_graphWindowPositionX != x) || (_graphWindowPositionY != y)) {
+    if ((_windowPositionX != x) || (_windowPositionY != y)) {
       onWindowPositionUpdate(x, y);
     }
 
@@ -85,16 +82,36 @@ public class GraphWindow extends ImGuiWindow {
     );
   }
 
+  public float getWidth() {
+    return _windowWidth;
+  }
+
+  public float getHeight() {
+    return _windowHeight;
+  }
+
+  public float getX() {
+    return _windowPositionX;
+  }
+
+  public float getY() {
+    return _windowPositionY;
+  }
+
+  public GraphActor getGraphActor() {
+    return _graphActor;
+  }
+
   private void onWindowSizeUpdate(float width, float height) {
     _graphActor.setSize(width - 40, height - 40);
-    _listener.updateGraphViewSize(width - 40, height - 40);
     _graphStageRenderer.updateTextureSize((int)width, (int)height);
+
+    _windowWidth = width;
+    _windowHeight = height;
   }
 
   private void onWindowPositionUpdate(float x, float y) {
-    _listener.updateGraphViewPos(x + 20, y + 20);
-
-    _graphWindowPositionX = x;
-    _graphWindowPositionY = y;
+    _windowPositionX = x;
+    _windowPositionY = y;
   }
 }

@@ -14,11 +14,6 @@ public class GraphActor extends Actor implements Disposable {
   private final Plot _plot;
 
   private final GraphPosition _position;
-  private final GraphPositionInputListener _inputListener;
-
-  public GraphPositionInputListener getInputListener() {
-    return _inputListener;
-  }
 
   public GraphActor(Vector2[] points) {
     _position = new GraphPosition(0, 0, 10, 10);
@@ -27,9 +22,6 @@ public class GraphActor extends Actor implements Disposable {
     _plot = new Plot(points, _position);
 
     _plot.setLineWidth(1.5f);
-
-    _inputListener = new GraphPositionInputListener(_position, this);
-    this.addListener(_inputListener);
   }
 
   public GraphPosition getPosition() {

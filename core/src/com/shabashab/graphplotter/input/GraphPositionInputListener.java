@@ -20,8 +20,8 @@ public class GraphPositionInputListener extends InputListener {
   private boolean _isCtrlPressed = false;
   private boolean _isShiftPressed = false;
 
-  public GraphPositionInputListener(GraphPosition position, GraphActor actor) {
-    _position = position;
+  public GraphPositionInputListener(GraphActor actor) {
+    _position = actor.getPosition();
     _actor = actor;
   }
 

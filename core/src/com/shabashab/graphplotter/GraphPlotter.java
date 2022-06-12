@@ -5,12 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.shabashab.graphplotter.ui.GUIScene;
 import com.shabashab.graphplotter.ui.ImGuiHelper;
-import com.shabashab.graphplotter.ui.UIActor;
+import com.shabashab.graphplotter.ui.ImGuiScene;
 
 public class GraphPlotter extends ApplicationAdapter {
 	private Stage _uiStage;
-	private UIActor _uiActor;
+	private ImGuiScene _uiScene;
 
 	public GraphPlotter() {
 	}
@@ -20,19 +21,19 @@ public class GraphPlotter extends ApplicationAdapter {
 		ImGuiHelper.initializeImGui();
 
 		_uiStage = new Stage();
-		_uiActor = new UIActor();
+		_uiScene = new GUIScene();
 
-		_uiStage.addActor(_uiActor);
+		_uiStage.addActor(_uiScene);
 
 		Gdx.input.setInputProcessor(_uiStage);
-		_uiStage.setScrollFocus(_uiActor);
-		_uiStage.setKeyboardFocus(_uiActor);
+		_uiStage.setScrollFocus(_uiScene);
+		_uiStage.setKeyboardFocus(_uiScene);
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		_uiStage.getViewport().update(width, height, true);
-		_uiActor.setBounds(0, 0, width, height);
+		_uiScene.setBounds(0, 0, width, height);
 	}
 
 	@Override
@@ -40,6 +41,8 @@ public class GraphPlotter extends ApplicationAdapter {
 		ScreenUtils.clear(Color.CYAN);
 
 		_uiStage.draw();
+
+		Gdx.graphics.setTitle("FPS:" + Gdx.graphics.getFramesPerSecond());
 	}
 
 	@Override

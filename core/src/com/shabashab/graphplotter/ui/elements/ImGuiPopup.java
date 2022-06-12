@@ -1,12 +1,15 @@
-package com.shabashab.graphplotter.ui;
+package com.shabashab.graphplotter.ui.elements;
 
+import com.shabashab.graphplotter.ui.GuiElementsPool;
 import imgui.ImGui;
 
-public abstract class ImGuiPopup {
+public abstract class ImGuiPopup extends ImGuiRenderable {
   private final String _name;
   private boolean _shouldOpen;
 
-  public ImGuiPopup(String name) {
+  public ImGuiPopup(GuiElementsPool elementsPool, String name) {
+    super(elementsPool);
+
     _name = name;
     _shouldOpen = false;
   }
@@ -27,17 +30,18 @@ public abstract class ImGuiPopup {
     _shouldOpen = false;
   }
 
-  public void render() {
+  @Override
+  protected boolean begin() {
+    if(!_shouldOpen)
+      return false;
+
     ImGui.openPopup(_name);
 
-    beforeBegin();
-    if(ImGui.beginPopupModal(_name)) {
-      setupDialog();
-      ImGui.endPopup();
-    }
+    return ImGui.beginPopupModal(_name);
   }
 
-  protected void beforeBegin() {}
-
-  protected abstract void setupDialog();
+  @Override
+  protected void end() {
+    ImGui.endPopup();
+  }
 }
