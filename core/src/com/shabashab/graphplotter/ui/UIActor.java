@@ -4,14 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.shabashab.graphplotter.input.LockerEventListener;
 import imgui.ImGui;
-import imgui.flag.ImGuiComboFlags;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiConfigFlags;
 
 public class UIActor extends Actor {
   private boolean _showMetricsWindow;
+
   private final LockerEventListener _lockerEventListener;
-  GraphWindow _graphWindow;
+  private final GraphWindow _graphWindow;
+  private final ImGuiPopupManager _popupManager;
+  private final SavePlotPopup _savePlotPopup;
 
   public UIActor() {
     ImGui.getIO().addConfigFlags(ImGuiConfigFlags.DockingEnable);
@@ -23,6 +25,10 @@ public class UIActor extends Actor {
 
     addListener(_lockerEventListener);
     addListener(_graphWindow.getEventListener());
+
+    _popupManager = new ImGuiPopupManager();
+    _savePlotPopup = new SavePlotPopup();
+    _popupManager.addPopup(_savePlotPopup);
   }
 
   @Override
@@ -34,8 +40,6 @@ public class UIActor extends Actor {
 
     ImGui.getIO().setConfigWindowsMoveFromTitleBarOnly(true);
 
-    boolean showPopup = false;
-
     if (ImGui.beginMainMenuBar()) {
       if (ImGui.beginMenu("File")) {
         if (ImGui.menuItem("Exit")) {
@@ -46,7 +50,7 @@ public class UIActor extends Actor {
 
       if (ImGui.beginMenu("Plot")) {
         if (ImGui.menuItem("Save to file...")) {
-          showPopup = true;
+          _savePlotPopup.open();
         }
         ImGui.endMenu();
       }
@@ -61,32 +65,6 @@ public class UIActor extends Actor {
       ImGui.endMainMenuBar();
     }
 
-    if (showPopup) {
-      ImGui.openPopup("popup");
-    }
-
-    ImGui.setNextWindowSize(300, 300);
-    if (ImGui.beginPopupModal("popup")) {
-      String[] comboItems = new String[]{
-              "JPG Image",
-              "PNG Image"
-      };
-
-      if(ImGui.beginCombo("File type: ", comboItems[0], ImGuiComboFlags.PopupAlignLeft)) {
-        for(String comboItem: comboItems) {
-          if(ImGui.selectable(comboItem)) {
-            ImGui.setItemDefaultFocus();
-          }
-        }
-        ImGui.endCombo();
-      }
-
-      if (ImGui.button("Close")) {
-        ImGui.closeCurrentPopup();
-      }
-      ImGui.endPopup();
-    }
-
     ImGui.setNextWindowSize(600, 600, ImGuiCond.FirstUseEver);
     _graphWindow.draw();
 
@@ -95,6 +73,8 @@ public class UIActor extends Actor {
 
     if(_showMetricsWindow)
       ImGui.showMetricsWindow();
+
+    _popupManager.renderPopups();
 
     ImGui.render();
     ImGuiHelper.getImGuiGl3().renderDrawData(ImGui.getDrawData());

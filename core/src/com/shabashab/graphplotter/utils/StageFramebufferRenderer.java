@@ -3,7 +3,7 @@ package com.shabashab.graphplotter.utils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import org.lwjgl.opengl.GL30;
 
-public class StageFramebufferRenderer extends FramebufferRenderer {
+public class StageFramebufferRenderer extends FrameBufferRenderer {
   private final Stage _stage;
 
   public StageFramebufferRenderer(Stage stage) {
