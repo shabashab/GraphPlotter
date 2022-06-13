@@ -74,9 +74,7 @@ public abstract class FrameBufferRenderer implements Disposable {
     }
 
     _frameBuffer.bind();
-
     draw();
-
     _frameBuffer.unbind();
   }
 

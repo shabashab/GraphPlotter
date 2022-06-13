@@ -30,6 +30,9 @@ public class GraphActor extends Actor implements Disposable {
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
+    _axis.setSize(getWidth(), getHeight());
+    _plot.setSize(getWidth(), getHeight());
+
     _axis.draw(batch);
     _plot.draw(batch);
   }

@@ -6,6 +6,9 @@ import com.shabashab.graphplotter.actors.GraphActor;
 import com.shabashab.graphplotter.ui.elements.ImGuiWindow;
 import com.shabashab.graphplotter.utils.StageFramebufferRenderer;
 import imgui.ImGui;
+import imgui.ImVec2;
+import imgui.flag.ImGuiCond;
+import imgui.flag.ImGuiStyleVar;
 
 public class GraphWindow extends ImGuiWindow {
   private final GraphActor _graphActor;
@@ -55,8 +58,8 @@ public class GraphWindow extends ImGuiWindow {
   protected void setup() {
     _isInFocus = ImGui.isWindowFocused();
 
-    int width = (int) ImGui.getWindowWidth();
-    int height = (int) ImGui.getWindowHeight();
+    int width = (int) ImGui.getWindowSizeX();
+    int height = (int) ImGui.getWindowSizeY();
 
     float x = ImGui.getWindowPosX();
     float y = ImGui.getWindowPosY();
@@ -103,7 +106,7 @@ public class GraphWindow extends ImGuiWindow {
   }
 
   private void onWindowSizeUpdate(float width, float height) {
-    _graphActor.setSize(width - 40, height - 40);
+    _graphActor.setSize(width, height);
     _graphStageRenderer.updateTextureSize((int)width, (int)height);
 
     _windowWidth = width;
@@ -113,5 +116,16 @@ public class GraphWindow extends ImGuiWindow {
   private void onWindowPositionUpdate(float x, float y) {
     _windowPositionX = x;
     _windowPositionY = y;
+  }
+
+  @Override
+  protected void beforeBegin() {
+    ImGui.setNextWindowSize(300, 300, ImGuiCond.FirstUseEver);
+    ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
+  }
+
+  @Override
+  protected void afterEnd(boolean beenRendered) {
+    ImGui.popStyleVar();
   }
 }

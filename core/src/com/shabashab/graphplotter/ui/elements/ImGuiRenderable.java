@@ -18,13 +18,21 @@ public abstract class ImGuiRenderable {
 
   protected abstract boolean begin();
   protected abstract void end();
+
+  protected void afterEnd(boolean beenRendered) {}
+
   protected abstract void setup();
 
   public void render() {
     beforeBegin();
-    if(begin()) {
+
+    boolean render = begin();
+
+    if(render) {
       setup();
       end();
     }
+
+    afterEnd(render);
   }
 }
