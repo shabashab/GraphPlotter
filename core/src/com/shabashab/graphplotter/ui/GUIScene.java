@@ -7,12 +7,18 @@ import imgui.flag.ImGuiConfigFlags;
 
 public class GUIScene extends ImGuiScene implements GuiElementsPool {
   private GraphWindow _graphWindow;
+  private PointsGeneratorWindow _pointsGeneratorWindow;
   private MainMenuBar _mainMenuBar;
   private SavePlotPopup _savePlotPopup;
 
   @Override
   public GraphWindow getGraphWindow() {
     return _graphWindow;
+  }
+
+  @Override
+  public PointsGeneratorWindow getPointsGeneratorWindow() {
+    return _pointsGeneratorWindow;
   }
 
   @Override
@@ -36,6 +42,9 @@ public class GUIScene extends ImGuiScene implements GuiElementsPool {
 
     _graphWindow = new GraphWindow(this);
     addToRenderQueue(_graphWindow);
+
+    _pointsGeneratorWindow = new PointsGeneratorWindow(this);
+    addToRenderQueue(_pointsGeneratorWindow);
 
     _savePlotPopup = new SavePlotPopup(this);
     _popupManager.addPopup(_savePlotPopup);

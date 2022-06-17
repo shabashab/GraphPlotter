@@ -28,6 +28,10 @@ public class GraphActor extends Actor implements Disposable {
     return _position;
   }
 
+  public void updatePoints(Vector2[] points) {
+    this._plot.updatePoints(points);
+  }
+
   @Override
   public void draw(Batch batch, float parentAlpha) {
     _axis.setSize(getWidth(), getHeight());
