@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.utils.Disposable;
-import com.shabashab.graphplotter.input.GraphPositionInputListener;
 import com.shabashab.graphplotter.sprites.Axis;
 import com.shabashab.graphplotter.sprites.Plot;
 import com.shabashab.graphplotter.utils.GraphPosition;
