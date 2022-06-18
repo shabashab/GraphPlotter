@@ -106,7 +106,7 @@ public class Markers extends Sprite implements Disposable {
       _renderer.line(yAxisX - lineHeight, realY, yAxisX, realY);
       _renderer.end();
       _batch.begin();
-      _font.draw(_batch, String.format("%.2f", graphY), yAxisX + lineHeight, realY);
+      _font.draw(_batch, String.format("%.2f", graphY * -1), yAxisX + lineHeight, realY);
       _batch.end();
       _renderer.begin(ShapeRenderer.ShapeType.Line);
 //      _font.draw(_batch, "dd", realX, xAxisY - lineHeight);
