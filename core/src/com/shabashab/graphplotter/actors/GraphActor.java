@@ -138,7 +138,6 @@ public class GraphActor extends Actor implements Disposable {
     _axis.setScreenSize(getWidth(), getHeight());
     _arrows.setScreenSize(getWidth(), getHeight());
     _plot.setScreenSize(getWidth(), getHeight());
-    _markers.setScreenSize(getWidth(), getHeight());
 
     _axis.draw(batch);
     _arrows.draw(batch);

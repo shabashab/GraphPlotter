@@ -18,11 +18,7 @@ public class Markers extends Sprite implements Disposable {
   private final ShapeRenderer _renderer;
   private final Camera _camera;
 
-  private float _screenWidth;
-  private float _screenHeight;
-
   private final BitmapFont _font;
-  private final GlyphLayout _glyphLayout;
 
   public Markers(GraphPosition position) {
     _position = position;
@@ -30,12 +26,8 @@ public class Markers extends Sprite implements Disposable {
     _camera = new OrthographicCamera();
     _viewport = new ScreenViewport(_camera);
 
-
     _batch = new SpriteBatch();
     _renderer = new ShapeRenderer();
-
-    _screenWidth = 0;
-    _screenHeight = 0;
 
     FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("arial.ttf"));
     FreeTypeFontGenerator.FreeTypeFontParameter generatorParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -45,14 +37,7 @@ public class Markers extends Sprite implements Disposable {
 
     _font = generator.generateFont(generatorParameter);
 
-    _glyphLayout = new GlyphLayout();
-
     generator.dispose();
-  }
-
-  public void setScreenSize(float width, float height) {
-    _screenWidth = width;
-    _screenHeight = height;
   }
 
   @Override
