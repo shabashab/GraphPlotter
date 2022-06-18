@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shabashab.graphplotter.sprites.Axis;
 import com.shabashab.graphplotter.sprites.AxisArrows;
+import com.shabashab.graphplotter.sprites.Markers;
 import com.shabashab.graphplotter.sprites.Plot;
 import com.shabashab.graphplotter.utils.GraphPosition;
 import com.shabashab.graphplotter.utils.ShaderLoader;
@@ -24,6 +25,7 @@ public class GraphActor extends Actor implements Disposable {
   private final Axis _axis;
   private final AxisArrows _arrows;
   private final Plot _plot;
+  private final Markers _markers;
 
   private final GraphPosition _position;
 
@@ -50,6 +52,7 @@ public class GraphActor extends Actor implements Disposable {
     _axis = new Axis(_position);
     _arrows = new AxisArrows(_position, new Vector2(30, 20));
     _plot = new Plot(points, _position);
+    _markers = new Markers(_position);
 
     _plot.setLineWidth(1.5f);
 
@@ -125,20 +128,25 @@ public class GraphActor extends Actor implements Disposable {
     _axis.setSize(getWidth(), getHeight() - graphYOffset);
     _arrows.setSize(getWidth(), getHeight() - graphYOffset);
     _plot.setSize(getWidth(), getHeight() - graphYOffset);
+    _markers.setSize(getWidth(), getHeight() - graphYOffset);
 
     _axis.setPosition(0, graphYOffset);
     _arrows.setPosition(0, graphYOffset);
     _plot.setPosition(0, graphYOffset);
+    _markers.setPosition(0, graphYOffset);
 
     _axis.setScreenSize(getWidth(), getHeight());
     _arrows.setScreenSize(getWidth(), getHeight());
     _plot.setScreenSize(getWidth(), getHeight());
+    _markers.setScreenSize(getWidth(), getHeight());
 
     _axis.draw(batch);
     _arrows.draw(batch);
     _plot.draw(batch);
+    _markers.draw(batch);
 
     if(_displayGraphTitle) {
+      _viewport.apply();
       _batch.begin();
       _font.draw(batch, _graphTitle, textX, textY);
       _batch.end();
