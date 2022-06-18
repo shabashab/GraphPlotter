@@ -37,8 +37,15 @@ public class GraphActor extends Actor implements Disposable {
   private boolean _displayGraphTitle;
   private String _graphTitle;
 
+  private Vector2[] _points;
+
   public GraphActor(Vector2[] points) {
-    _position = new GraphPosition(0, 0, 10, 10);
+    this(points, new GraphPosition(0, 0, 10, 10));
+  }
+
+  public GraphActor(Vector2[] points, GraphPosition position) {
+    _position = position;
+    _points = points;
 
     _axis = new Axis(_position);
     _arrows = new AxisArrows(_position, new Vector2(30, 20));
@@ -74,6 +81,7 @@ public class GraphActor extends Actor implements Disposable {
 
   public void updatePoints(Vector2[] points) {
     this._plot.updatePoints(points);
+    _points = points;
   }
 
   public void setGraphTitle(String title) {
@@ -86,7 +94,6 @@ public class GraphActor extends Actor implements Disposable {
 
   @Override
   public void draw(Batch batch, float parentAlpha) {
-    float graphXOffset = 0f;
     float graphYOffset = 0f;
     float textX = 0, textY = 0;
 
@@ -136,6 +143,14 @@ public class GraphActor extends Actor implements Disposable {
       _font.draw(batch, _graphTitle, textX, textY);
       _batch.end();
     }
+  }
+
+  public String getGraphTitle() {
+    return _graphTitle;
+  }
+
+  public GraphActor createCopy() {
+    return new GraphActor(_points, _position);
   }
 
   @Override

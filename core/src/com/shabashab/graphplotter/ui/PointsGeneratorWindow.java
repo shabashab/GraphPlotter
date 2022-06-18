@@ -27,13 +27,17 @@ public class PointsGeneratorWindow extends ImGuiWindow {
     ImGui.inputFloat("Range MIN", rangeMin);
     ImGui.inputFloat("Range MAX", rangeMax);
     if(ImGui.button("Generate points")) {
-      Vector2[] points = generatePoints(pointsCountValue.get(), rangeMin.get(), rangeMax.get());
+      Vector2[] points = generatePoints();
       this.getElementsPool().getGraphWindow().getGraphActor().updatePoints(points);
     }
   }
 
   private static float fun(float x) {
     return (float)Math.sin(x);
+  }
+
+  private Vector2[] generatePoints() {
+    return generatePoints(pointsCountValue.get(), rangeMin.get(), rangeMax.get());
   }
 
   private static Vector2[] generatePoints(int pointsCount, float min, float max) {
