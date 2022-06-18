@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shabashab.graphplotter.ui.GUIScene;
 import com.shabashab.graphplotter.ui.ImGuiHelper;
 import com.shabashab.graphplotter.ui.ImGuiScene;

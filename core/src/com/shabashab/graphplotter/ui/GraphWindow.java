@@ -31,6 +31,9 @@ public class GraphWindow extends ImGuiWindow {
     _graphActor = new GraphActor(calculatePoints(-10f, 10f, 200));
     graphStage.addActor(_graphActor);
 
+    _graphActor.setGraphTitle("R(a) = sin(0.99a)");
+    _graphActor.setDisplayGraphTitle(true);
+
     _graphStageRenderer = new StageFramebufferRenderer(graphStage);
   }
 

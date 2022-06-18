@@ -20,6 +20,8 @@ public class Plot extends Sprite implements Disposable {
 
   private final ShaderProgram _shader;
 
+  private final float[] _screenSize;
+
   private float _lineWidth;
 
   public Plot(Vector2[] points, GraphPosition position) {
@@ -27,6 +29,7 @@ public class Plot extends Sprite implements Disposable {
     _position = position;
     _shader = ShaderLoader.loadShader("shaders/plot.vert", "shaders/plot.frag");
     _lineWidth = 1.0f;
+    _screenSize = new float[] {0, 0};
   }
 
   public GraphPosition getPosition() {
@@ -39,6 +42,11 @@ public class Plot extends Sprite implements Disposable {
 
   public void setLineWidth(float value) {
     this._lineWidth = value;
+  }
+
+  public void setScreenSize(float width, float height) {
+    _screenSize[0] = width;
+    _screenSize[1] = height;
   }
 
   public void updatePoints(Vector2[] points) {
@@ -72,6 +80,10 @@ public class Plot extends Sprite implements Disposable {
 
     _shader.setUniform2fv("u_offset", _position.getOffsetUniformData(), 0, 2);
     _shader.setUniform2fv("u_scale", _position.getScaleUniformData(), 0, 2);
+
+    _shader.setUniform2fv("u_screenSize", _screenSize, 0, 2);
+    _shader.setUniform2fv("u_position", new float[] {getX(), getY()}, 0, 2);
+    _shader.setUniform2fv("u_size", new float[] {getWidth(), getHeight()}, 0, 2);
 
     Gdx.gl.glLineWidth(_lineWidth);
     _mesh.render(_shader, GL20.GL_LINE_STRIP);
