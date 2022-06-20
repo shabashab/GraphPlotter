@@ -6,5 +6,6 @@ public interface GuiElementsPool {
 
   MainMenuBar getMainMenuBar();
   SavePlotPopup getSavePlotPopup();
+  ErrorPopup getErrorPopup();
 
 }

@@ -10,6 +10,7 @@ public class GUIScene extends ImGuiScene implements GuiElementsPool {
   private PointsGeneratorWindow _pointsGeneratorWindow;
   private MainMenuBar _mainMenuBar;
   private SavePlotPopup _savePlotPopup;
+  private ErrorPopup _errorPopup;
 
   @Override
   public GraphWindow getGraphWindow() {
@@ -29,6 +30,11 @@ public class GUIScene extends ImGuiScene implements GuiElementsPool {
   @Override
   public SavePlotPopup getSavePlotPopup() {
     return _savePlotPopup;
+  }
+
+  @Override
+  public ErrorPopup getErrorPopup() {
+    return _errorPopup;
   }
 
   @Override
@@ -55,6 +61,8 @@ public class GUIScene extends ImGuiScene implements GuiElementsPool {
     _savePlotPopup = new SavePlotPopup(this);
     _popupManager.addPopup(_savePlotPopup);
 
+    _errorPopup = new ErrorPopup(this);
+    _popupManager.addPopup(_errorPopup);
 
     addToRenderQueue(_popupManager);
 

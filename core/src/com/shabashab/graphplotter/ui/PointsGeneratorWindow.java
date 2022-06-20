@@ -46,8 +46,20 @@ public class PointsGeneratorWindow extends ImGuiWindow {
     ImGui.inputFloat("##maxval", rangeMax);
 
     if(ImGui.button("Generate points")) {
-      Vector2[] points = generatePoints();
-      this.getElementsPool().getGraphWindow().getGraphActor().updatePoints(points);
+      if(pointsCountValue.get() <= 0) {
+        String errorMessage = String.format("Points count can't be less or equal to 0. Your input is %d", pointsCountValue.get());
+
+        getElementsPool().getErrorPopup().setErrorMessage(errorMessage);
+        getElementsPool().getErrorPopup().open();
+      } else if(rangeMin.get() >= rangeMax.get()) {
+        String errorMessage = "The minimum of the range can't be greater or equal to the maximum of the range.";
+
+        getElementsPool().getErrorPopup().setErrorMessage(errorMessage);
+        getElementsPool().getErrorPopup().open();
+      } else {
+        Vector2[] points = generatePoints();
+        this.getElementsPool().getGraphWindow().getGraphActor().updatePoints(points);
+      }
     }
   }
 
