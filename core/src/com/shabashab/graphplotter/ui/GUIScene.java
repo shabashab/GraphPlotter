@@ -46,8 +46,15 @@ public class GUIScene extends ImGuiScene implements GuiElementsPool {
     _pointsGeneratorWindow = new PointsGeneratorWindow(this);
     addToRenderQueue(_pointsGeneratorWindow);
 
+    GraphPositionInfoWindow graphPositionInfoWindow = new GraphPositionInfoWindow(this);
+    addToRenderQueue(graphPositionInfoWindow);
+
+    GraphPositionSetWindow graphPositionSetWindow = new GraphPositionSetWindow(this);
+    addToRenderQueue(graphPositionSetWindow);
+
     _savePlotPopup = new SavePlotPopup(this);
     _popupManager.addPopup(_savePlotPopup);
+
 
     addToRenderQueue(_popupManager);
 

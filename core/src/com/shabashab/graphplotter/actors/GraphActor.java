@@ -42,7 +42,7 @@ public class GraphActor extends Actor implements Disposable {
   private Vector2[] _points;
 
   public GraphActor(Vector2[] points) {
-    this(points, new GraphPosition(0, 0, 10, 10));
+    this(points, new GraphPosition(0, 0, 1.2f, 1.2f));
   }
 
   public GraphActor(Vector2[] points, GraphPosition position) {
@@ -54,7 +54,7 @@ public class GraphActor extends Actor implements Disposable {
     _plot = new Plot(points, _position);
     _markers = new Markers(_position);
 
-    _plot.setLineWidth(1.5f);
+    _plot.setLineWidth(1f);
 
     FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("arial.ttf"));
     FreeTypeFontGenerator.FreeTypeFontParameter generatorParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();

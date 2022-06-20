@@ -28,7 +28,7 @@ public class GraphWindow extends ImGuiWindow {
 
     Stage graphStage = new Stage();
 
-    _graphActor = new GraphActor(calculatePoints(-10f, 10f, 200));
+    _graphActor = new GraphActor(new Vector2[0]);
     graphStage.addActor(_graphActor);
 
     _graphActor.setGraphTitle("R(a) = sin(0.99a)");
@@ -123,7 +123,15 @@ public class GraphWindow extends ImGuiWindow {
 
   @Override
   protected void beforeBegin() {
-    ImGui.setNextWindowSize(300, 300, ImGuiCond.FirstUseEver);
+    float windowSizeX = ImGui.getMainViewport().getWorkSizeX();
+    float windowSizeY = ImGui.getMainViewport().getWorkSizeY();
+
+    float graphWindowHeight = windowSizeY / 1.5f;
+    float graphWindowWidth = graphWindowHeight;
+
+    ImGui.setNextWindowSize(graphWindowWidth, graphWindowHeight, ImGuiCond.FirstUseEver);
+    ImGui.setNextWindowPos((windowSizeX / 2) - (graphWindowWidth / 2), (windowSizeY / 2) - (graphWindowHeight / 2), ImGuiCond.FirstUseEver);
+
     ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
   }
 

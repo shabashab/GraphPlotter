@@ -25,14 +25,13 @@ public abstract class ImGuiRenderable {
 
   public void render() {
     beforeBegin();
-
     boolean render = begin();
 
     if(render) {
       setup();
-      end();
     }
 
+    end();
     afterEnd(render);
   }
 }

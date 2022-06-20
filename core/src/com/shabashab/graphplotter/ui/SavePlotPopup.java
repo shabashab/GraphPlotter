@@ -26,6 +26,7 @@ public class SavePlotPopup extends ImGuiPopup {
 
   private final ImBoolean _transparentBackground;
   private final ImBoolean _showTitle;
+  private final ImBoolean _clipToWindowSize;
 
   private final ImInt _imageWidth;
   private final ImInt _imageHeight;
@@ -37,6 +38,8 @@ public class SavePlotPopup extends ImGuiPopup {
 
     _transparentBackground = new ImBoolean(false);
     _showTitle = new ImBoolean(true);
+
+    _clipToWindowSize = new ImBoolean(false);
 
     _imageWidth = new ImInt(1000);
     _imageHeight = new ImInt(1000);
@@ -65,11 +68,24 @@ public class SavePlotPopup extends ImGuiPopup {
     ImGui.checkbox("Transparent background", _transparentBackground);
     ImGui.checkbox("Show title", _showTitle);
 
-    ImGui.labelText("##imageWidth", "Image width");
-    ImGui.inputInt("##imageWidth", _imageWidth);
+    ImGui.checkbox("Clip image size to the size of the plot window", _clipToWindowSize);
 
-    ImGui.labelText("##imageHeight", "Image height");
-    ImGui.inputInt("##imageHeight", _imageHeight);
+    if(_clipToWindowSize.get()) {
+      GraphWindow graphWindow = getElementsPool().getGraphWindow();
+
+      _imageWidth.set((int)graphWindow.getWidth());
+      _imageHeight.set((int)graphWindow.getHeight());
+
+      ImGui.text("Image width: " + _imageWidth.get());
+      ImGui.text("Image height: " + _imageHeight.get());
+    } else {
+      ImGui.labelText("##imageWidth", "Image width");
+      ImGui.inputInt("##imageWidth", _imageWidth);
+
+      ImGui.labelText("##imageHeight", "Image height");
+      ImGui.inputInt("##imageHeight", _imageHeight);
+    }
+
 
     if(ImGui.button("Save")) {
       FrameBuffer frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, _imageWidth.get(), _imageHeight.get(), false);
@@ -113,8 +129,7 @@ public class SavePlotPopup extends ImGuiPopup {
       frameBuffer.dispose();
       stage.dispose();
 
-      graphActor.setWidth(prevGraphActorWidth);
-      graphActor.setHeight(prevGraphActorHeight);
+      close();
     }
 
     ImGui.sameLine();
