@@ -6,7 +6,7 @@ import imgui.ImGui;
 import imgui.flag.ImGuiCond;
 
 public class GraphPositionInfoWindow extends ImGuiWindow {
-  private GraphPosition _position;
+  private final GraphPosition _position;
 
   protected GraphPositionInfoWindow(GuiElementsPool pool) {
     super(pool, "Graph position info");

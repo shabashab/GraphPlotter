@@ -8,7 +8,7 @@ import imgui.ImGui;
 import java.util.ArrayList;
 
 public abstract class ImGuiScene extends Actor {
-  private ArrayList<ImGuiRenderable> _renderable;
+  private final ArrayList<ImGuiRenderable> _renderable;
 
   protected void addToRenderQueue(ImGuiRenderable renderable) {
     _renderable.add(renderable);

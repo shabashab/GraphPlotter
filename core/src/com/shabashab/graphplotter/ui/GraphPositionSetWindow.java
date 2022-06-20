@@ -6,12 +6,12 @@ import imgui.ImGui;
 import imgui.type.ImFloat;
 
 public class GraphPositionSetWindow extends ImGuiWindow {
-  private GraphPosition _position;
+  private final GraphPosition _position;
 
-  private ImFloat _scaleX;
-  private ImFloat _scaleY;
-  private ImFloat _positionX;
-  private ImFloat _positionY;
+  private final ImFloat _scaleX;
+  private final ImFloat _scaleY;
+  private final ImFloat _positionX;
+  private final ImFloat _positionY;
 
   protected GraphPositionSetWindow(GuiElementsPool pool) {
     super(pool, "Set graph position");
