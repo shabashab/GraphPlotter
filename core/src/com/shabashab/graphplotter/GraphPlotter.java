@@ -41,8 +41,6 @@ public class GraphPlotter extends ApplicationAdapter {
 		ScreenUtils.clear(Color.CYAN);
 
 		_uiStage.draw();
-
-		Gdx.graphics.setTitle("FPS:" + Gdx.graphics.getFramesPerSecond());
 	}
 
 	@Override
