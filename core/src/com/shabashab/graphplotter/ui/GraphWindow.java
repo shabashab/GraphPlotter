@@ -37,22 +37,6 @@ public class GraphWindow extends ImGuiWindow {
     _graphStageRenderer = new StageFramebufferRenderer(graphStage);
   }
 
-
-  private Vector2[] calculatePoints(float from, float to, int stepsCount) {
-    float stepSize = (to - from) / stepsCount;
-
-    Vector2[] points = new Vector2[stepsCount];
-
-    for (int i = 0; i < stepsCount; i++) {
-      float x = from + stepSize * i;
-      float y = (float) Math.sin(x);
-
-      points[i] = new Vector2(x, y);
-    }
-
-    return points;
-  }
-
   public boolean getIsInFocus() {
     return _isInFocus;
   }
