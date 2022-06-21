@@ -9,62 +9,81 @@ import imgui.type.ImFloat;
 import imgui.type.ImInt;
 
 public class PointsGeneratorWindow extends ImGuiWindow {
-  boolean firstUse = true;
-  ImInt pointsCountValue;
+  boolean _firstUse = true;
 
-  ImFloat rangeMin;
-  ImFloat rangeMax;
+  private final ImInt _pointsCount;
+  private final ImFloat _rangeMin;
+  private final ImFloat _rangeMax;
+
 
   public PointsGeneratorWindow(GuiElementsPool pool) {
     super(pool, "Points Generator Options");
 
-    pointsCountValue = new ImInt(1235);
+    _pointsCount = new ImInt(1235);
+    _rangeMin = new ImFloat(-200f);
+    _rangeMax = new ImFloat(200f);
 
-    rangeMin = new ImFloat(-200f);
-    rangeMax = new ImFloat(200f);
+    setSize(200, 0, ImGuiCond.FirstUseEver);
   }
 
   @Override
   protected void setup() {
-    if(firstUse) {
-      firstUse = false;
+    if(_firstUse) {
+      _firstUse = false;
 
-      Vector2[] points = generatePoints();
-      this.getElementsPool().getGraphWindow().getGraphActor().updatePoints(points);
+      generateAndUpdatePoints();
     }
 
     float width = ImGui.getContentRegionAvailX();
 
     ImGui.labelText("##pointsCount", "Points count:");
     ImGui.setNextItemWidth(width);
-    ImGui.inputInt("##pointsCount", pointsCountValue);
+    ImGui.inputInt("##pointsCount", _pointsCount);
     ImGui.labelText("##minval", "Min value (in pi):");
     ImGui.setNextItemWidth(width);
-    ImGui.inputFloat("##minval", rangeMin);
+    ImGui.inputFloat("##minval", _rangeMin);
     ImGui.labelText("##maxval", "Max value (in pi):");
     ImGui.setNextItemWidth(width);
-    ImGui.inputFloat("##maxval", rangeMax);
+    ImGui.inputFloat("##maxval", _rangeMax);
 
     if(ImGui.button("Generate points")) {
-      if(pointsCountValue.get() <= 0) {
-        String errorMessage = String.format("Points count can't be less or equal to 0. Your input is %d", pointsCountValue.get());
-
-        getElementsPool().getErrorPopup().setErrorMessage(errorMessage);
-        getElementsPool().getErrorPopup().open();
-      } else if(rangeMin.get() >= rangeMax.get()) {
-        String errorMessage = "The minimum of the range can't be greater or equal to the maximum of the range.";
-
-        getElementsPool().getErrorPopup().setErrorMessage(errorMessage);
-        getElementsPool().getErrorPopup().open();
-      } else {
-        Vector2[] points = generatePoints();
-        this.getElementsPool().getGraphWindow().getGraphActor().updatePoints(points);
-      }
+      onGeneratePointsButtonClick();
     }
   }
 
-  private Vector2[] generatePoints() {
-    return generatePoints(pointsCountValue.get(), rangeMin.get(), rangeMax.get());
+  private void generateAndUpdatePoints() {
+    Vector2[] points =generatePointsWidthParameters();
+    this.getElementsPool().getGraphWindow().getGraphActor().updatePoints(points);
+  }
+
+  private void onGeneratePointsButtonClick() {
+    String errorMessage = validateInputValues();
+
+    if(errorMessage.length() != 0) {
+      getElementsPool().getErrorPopup().setErrorMessage(errorMessage);
+      getElementsPool().getErrorPopup().open();
+      return;
+    }
+
+    Vector2[] points = generatePointsWidthParameters();
+    this.getElementsPool().getGraphWindow().getGraphActor().updatePoints(points);
+  }
+
+  private Vector2[] generatePointsWidthParameters() {
+    return generatePoints(_pointsCount.get(), _rangeMin.get(), _rangeMax.get());
+  }
+
+  private String validateInputValues() {
+    if(_pointsCount.get() <= 0) {
+      return String.format("Points count can't be less or equal to 0. Your input is %d", _pointsCount.get());
+
+    }
+
+    if(_rangeMin.get() >= _rangeMax.get()) {
+      return "The minimum of the range can't be greater or equal to the maximum of the range.";
+    }
+
+    return "";
   }
 
   private static Vector2[] generatePoints(int pointsCount, float min, float max) {
@@ -82,26 +101,5 @@ public class PointsGeneratorWindow extends ImGuiWindow {
     }
 
     return points;
-  }
-
-  private static Vector2[] generatePointsByStep(float step, float min, int stepsCount) {
-    Vector2[] points = new Vector2[stepsCount];
-
-    for(int i = 0; i < stepsCount; i++) {
-      float a = (float)((min + step * i) * Math.PI);
-      float r = (float)Math.sin(a * 0.99);
-
-      float x = r * (float)Math.cos(a);
-      float y = r * (float)Math.sin(a);
-
-      points[i] = new Vector2(x, y);
-    }
-
-    return points;
-  }
-
-  @Override
-  protected void beforeBegin() {
-    ImGui.setNextWindowSize(200, 0, ImGuiCond.FirstUseEver);
   }
 }

@@ -24,12 +24,5 @@ public class MainMenuBar extends ImGuiMainMenuBar {
       }
       ImGui.endMenu();
     }
-
-//    if(ImGui.beginMenu("View")) {
-//      if(ImGui.menuItem("Toggle metrics")) {
-//        _showMetricsWindow = !_showMetricsWindow;
-//      }
-//      ImGui.endMenu();
-//    }
   }
 }

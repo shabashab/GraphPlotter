@@ -12,6 +12,8 @@ public class GraphPositionInfoWindow extends ImGuiWindow {
   public GraphPositionInfoWindow(GuiElementsPool pool) {
     super(pool, "Graph position info");
 
+    setSize(300, 0, ImGuiCond.FirstUseEver);
+
     _position = pool.getGraphWindow().getGraphActor().getPosition();
   }
 
@@ -21,10 +23,5 @@ public class GraphPositionInfoWindow extends ImGuiWindow {
     ImGui.text("Graph position Y: " + _position.getYOffset() * -1);
     ImGui.text("Graph scale X: " + _position.getXScale());
     ImGui.text("Graph scale Y: " + _position.getYScale());
-  }
-
-  @Override
-  protected void beforeBegin() {
-    ImGui.setNextWindowSize(300, 0, ImGuiCond.FirstUseEver);
   }
 }

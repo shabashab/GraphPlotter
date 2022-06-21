@@ -4,6 +4,7 @@ import com.shabashab.graphplotter.ui.GuiElementsPool;
 import com.shabashab.graphplotter.ui.elements.base.ImGuiWindow;
 import com.shabashab.graphplotter.utils.GraphPosition;
 import imgui.ImGui;
+import imgui.flag.ImGuiCond;
 import imgui.type.ImFloat;
 
 public class GraphPositionSetWindow extends ImGuiWindow {
@@ -16,6 +17,8 @@ public class GraphPositionSetWindow extends ImGuiWindow {
 
   public GraphPositionSetWindow(GuiElementsPool pool) {
     super(pool, "Set graph position");
+
+    setSize(300, 0, ImGuiCond.FirstUseEver);
 
     _position = pool.getGraphWindow().getGraphActor().getPosition();
     _scaleX = new ImFloat(_position.getXScale());
@@ -48,10 +51,5 @@ public class GraphPositionSetWindow extends ImGuiWindow {
       _position.setOffset(_positionX.get() * -1, _positionY.get() * -1);
       _position.setScale(_scaleX.get(), _scaleY.get());
     }
-  }
-
-  @Override
-  protected void beforeBegin() {
-    ImGui.setNextWindowSize(300, 0);
   }
 }

@@ -110,11 +110,12 @@ public class GraphWindow extends ImGuiWindow {
     float windowSizeX = ImGui.getMainViewport().getWorkSizeX();
     float windowSizeY = ImGui.getMainViewport().getWorkSizeY();
 
-    float graphWindowHeight = windowSizeY / 1.5f;
-    float graphWindowWidth = graphWindowHeight;
+    float graphWindowSize = windowSizeY / 1.5f;
 
-    ImGui.setNextWindowSize(graphWindowWidth, graphWindowHeight, ImGuiCond.FirstUseEver);
-    ImGui.setNextWindowPos((windowSizeX / 2) - (graphWindowWidth / 2), (windowSizeY / 2) - (graphWindowHeight / 2), ImGuiCond.FirstUseEver);
+    setSize(graphWindowSize, graphWindowSize, ImGuiCond.FirstUseEver);
+    setPosition((windowSizeX / 2) - (graphWindowSize / 2), (windowSizeY / 2) - (graphWindowSize / 2), ImGuiCond.FirstUseEver);
+
+    super.beforeBegin();
 
     ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
   }
