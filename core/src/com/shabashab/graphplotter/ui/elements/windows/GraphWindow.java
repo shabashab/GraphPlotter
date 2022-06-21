@@ -1,12 +1,12 @@
-package com.shabashab.graphplotter.ui;
+package com.shabashab.graphplotter.ui.elements.windows;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.shabashab.graphplotter.actors.GraphActor;
-import com.shabashab.graphplotter.ui.elements.ImGuiWindow;
+import com.shabashab.graphplotter.ui.GuiElementsPool;
+import com.shabashab.graphplotter.ui.elements.base.ImGuiWindow;
 import com.shabashab.graphplotter.utils.StageFramebufferRenderer;
 import imgui.ImGui;
-import imgui.ImVec2;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiStyleVar;
 

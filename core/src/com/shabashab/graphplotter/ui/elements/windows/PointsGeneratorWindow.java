@@ -1,8 +1,8 @@
-package com.shabashab.graphplotter.ui;
+package com.shabashab.graphplotter.ui.elements.windows;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.shabashab.graphplotter.ui.elements.ImGuiWindow;
+import com.shabashab.graphplotter.ui.GuiElementsPool;
+import com.shabashab.graphplotter.ui.elements.base.ImGuiWindow;
 import imgui.ImGui;
 import imgui.flag.ImGuiCond;
 import imgui.type.ImFloat;
@@ -15,7 +15,7 @@ public class PointsGeneratorWindow extends ImGuiWindow {
   ImFloat rangeMin;
   ImFloat rangeMax;
 
-  protected PointsGeneratorWindow(GuiElementsPool pool) {
+  public PointsGeneratorWindow(GuiElementsPool pool) {
     super(pool, "Points Generator Options");
 
     pointsCountValue = new ImInt(1235);

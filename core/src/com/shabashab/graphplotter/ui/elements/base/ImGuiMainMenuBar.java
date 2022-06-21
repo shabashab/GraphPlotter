@@ -1,4 +1,4 @@
-package com.shabashab.graphplotter.ui.elements;
+package com.shabashab.graphplotter.ui.elements.base;
 
 import com.shabashab.graphplotter.ui.GuiElementsPool;
 import imgui.ImGui;

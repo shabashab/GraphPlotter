@@ -1,7 +1,7 @@
 package com.shabashab.graphplotter.ui;
 
-import com.shabashab.graphplotter.ui.elements.ImGuiPopup;
-import com.shabashab.graphplotter.ui.elements.ImGuiRenderable;
+import com.shabashab.graphplotter.ui.elements.base.ImGuiPopup;
+import com.shabashab.graphplotter.ui.elements.base.ImGuiRenderable;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,7 @@
-package com.shabashab.graphplotter.ui;
+package com.shabashab.graphplotter.ui.elements.windows;
 
-import com.shabashab.graphplotter.ui.elements.ImGuiWindow;
+import com.shabashab.graphplotter.ui.GuiElementsPool;
+import com.shabashab.graphplotter.ui.elements.base.ImGuiWindow;
 import com.shabashab.graphplotter.utils.GraphPosition;
 import imgui.ImGui;
 import imgui.flag.ImGuiCond;
@@ -8,7 +9,7 @@ import imgui.flag.ImGuiCond;
 public class GraphPositionInfoWindow extends ImGuiWindow {
   private final GraphPosition _position;
 
-  protected GraphPositionInfoWindow(GuiElementsPool pool) {
+  public GraphPositionInfoWindow(GuiElementsPool pool) {
     super(pool, "Graph position info");
 
     _position = pool.getGraphWindow().getGraphActor().getPosition();

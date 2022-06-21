@@ -1,4 +1,4 @@
-package com.shabashab.graphplotter.ui;
+package com.shabashab.graphplotter.ui.elements.popups;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
@@ -8,7 +8,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shabashab.graphplotter.actors.GraphActor;
-import com.shabashab.graphplotter.ui.elements.ImGuiPopup;
+import com.shabashab.graphplotter.ui.GuiElementsPool;
+import com.shabashab.graphplotter.ui.elements.base.ImGuiPopup;
+import com.shabashab.graphplotter.ui.elements.windows.GraphWindow;
 import imgui.ImGui;
 import imgui.flag.ImGuiCond;
 import imgui.type.ImBoolean;

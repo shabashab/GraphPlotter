@@ -1,6 +1,7 @@
-package com.shabashab.graphplotter.ui;
+package com.shabashab.graphplotter.ui.elements.popups;
 
-import com.shabashab.graphplotter.ui.elements.ImGuiPopup;
+import com.shabashab.graphplotter.ui.GuiElementsPool;
+import com.shabashab.graphplotter.ui.elements.base.ImGuiPopup;
 import imgui.ImGui;
 
 public class ErrorPopup extends ImGuiPopup {

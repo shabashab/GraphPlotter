@@ -3,7 +3,7 @@ package com.shabashab.graphplotter.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.shabashab.graphplotter.ui.GraphWindow;
+import com.shabashab.graphplotter.ui.elements.windows.GraphWindow;
 
 public final class GraphWindowEventListenerRouter extends ConditionalEventListenerRouter {
   private final GraphWindow _graphWindow;

@@ -1,4 +1,4 @@
-package com.shabashab.graphplotter.ui.elements;
+package com.shabashab.graphplotter.ui.elements.base;
 
 import com.shabashab.graphplotter.ui.GUIScene;
 import com.shabashab.graphplotter.ui.GuiElementsPool;
@@ -16,6 +16,7 @@ public abstract class ImGuiRenderable {
 
   protected void beforeBegin() {}
 
+  protected boolean shouldBegin() {return true;}
   protected abstract boolean begin();
   protected abstract void end();
 
@@ -24,6 +25,10 @@ public abstract class ImGuiRenderable {
   protected abstract void setup();
 
   public void render() {
+    if(!shouldBegin()) {
+      return;
+    }
+
     beforeBegin();
     boolean render = begin();
 

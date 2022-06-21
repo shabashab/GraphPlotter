@@ -2,7 +2,7 @@ package com.shabashab.graphplotter.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.shabashab.graphplotter.ui.elements.ImGuiRenderable;
+import com.shabashab.graphplotter.ui.elements.base.ImGuiRenderable;
 import imgui.ImGui;
 
 import java.util.ArrayList;

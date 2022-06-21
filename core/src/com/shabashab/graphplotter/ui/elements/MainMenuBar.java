@@ -1,6 +1,7 @@
-package com.shabashab.graphplotter.ui;
+package com.shabashab.graphplotter.ui.elements;
 
-import com.shabashab.graphplotter.ui.elements.ImGuiMainMenuBar;
+import com.shabashab.graphplotter.ui.GuiElementsPool;
+import com.shabashab.graphplotter.ui.elements.base.ImGuiMainMenuBar;
 import imgui.ImGui;
 
 public class MainMenuBar extends ImGuiMainMenuBar {

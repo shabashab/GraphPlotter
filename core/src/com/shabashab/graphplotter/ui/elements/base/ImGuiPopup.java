@@ -1,4 +1,4 @@
-package com.shabashab.graphplotter.ui.elements;
+package com.shabashab.graphplotter.ui.elements.base;
 
 import com.shabashab.graphplotter.ui.GuiElementsPool;
 import imgui.ImGui;
@@ -31,10 +31,12 @@ public abstract class ImGuiPopup extends ImGuiRenderable {
   }
 
   @Override
-  protected boolean begin() {
-    if(!_shouldOpen)
-      return false;
+  protected boolean shouldBegin() {
+    return _shouldOpen;
+  }
 
+  @Override
+  protected boolean begin() {
     ImGui.openPopup(_name);
 
     return ImGui.beginPopupModal(_name);

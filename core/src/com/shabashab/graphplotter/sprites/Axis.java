@@ -1,6 +1,5 @@
 package com.shabashab.graphplotter.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.shabashab.graphplotter.utils.GraphPosition;
